@@ -46,16 +46,18 @@ def token_count():
 
 
 @app.route("/chat-tokens", methods=['POST', 'GET'])
-def num_tokens_from_messages():
-    """Return the number of tokens used by a list of messages."""
+def chat_tokens():
     data = request.get_json()
     if not 'messages' in data:
-      return json.dumps({'tokens': []})
+      return json.dumps({'token_count': 0})
     messages = data['messages']
     model = "gpt-3.5-turbo-0613"
     if  'model' in data:
       model = data['model']
+    return num_tokens_from_messages(messages, model)
     
+def num_tokens_from_messages(messages, model):
+    """Return the number of tokens used by a list of messages."""
     try:
         encoding = tiktoken.encoding_for_model(model)
     except KeyError:
