@@ -1,0 +1,21 @@
+on:
+  workflow_call:
+
+jobs:
+  deploy:
+    name: Deploy to Dokku
+    runs-on: ubuntu-latest
+    steps:
+      - name: git checkout
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+      - id: deploy
+        name: Deploy app to dokku
+        uses: idoberko2/dokku-deploy-github-action@v1
+        with:
+          ssh-private-key: ${{ secrets.DOKKU_SSH_PRIVATE_KEY }}
+          dokku-host: ${{ vars.HOST_IP }}
+          app-name: ${{ vars.APP_NAME }}
+          remote-branch: main
+          git-push-flags: --set-upstream --force

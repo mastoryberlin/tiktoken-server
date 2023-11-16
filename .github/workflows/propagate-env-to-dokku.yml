@@ -1,0 +1,27 @@
+on:
+  workflow_call:
+
+jobs:
+  propagate-env:
+    name: Propagate ENV Variables to Dokku
+    runs-on: ubuntu-latest
+    steps:
+      - id: set_env
+        name: Set env variables
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.HOST_IP }}
+          username: dokku
+          key: ${{ secrets.DOKKU_SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            config:set --no-restart ${{ vars.APP_NAME }} HOST_IP="${{ vars.HOST_IP }}" HOST_NAME="${{ vars.HOST_NAME }}"
+
+
+
+
+
+
+
+
+

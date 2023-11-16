@@ -1,0 +1,14 @@
+name: "Deploy on Push to Branch"
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  propagate-env:
+    uses: './.github/workflows/propagate-env-to-dokku.yml'
+    secrets: inherit
+  deploy:
+    needs: [propagate-env]
+    uses: './.github/workflows/deploy-to-dokku.yml'
+    secrets: inherit
